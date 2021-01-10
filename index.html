@@ -1,7 +1,91 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+<h2>QRs para applaydu</h2>
+
+<div id="qr_container">
+<!-- <div>
+<div id="qr_code_1"></div>
+<p id="qr_label_1"></p>
+</div>
+</div>
+
+<div>
+<div id="qr_code_2"></div>
+<p id="qr_label_2"></p>
+</div>
+</div>-->
+</div>
+
+<script>
+
+function makeRef(number) {
+    var zeros = '';
+    if(number < 10){
+        zeros = '00';
+    }
+    else if(number < 100){
+        zeros = '0';
+    }
+
+    return 'VV' + zeros + number;
+}
+
+function makeURL(number){
+    return 'https://qr.kinder.com/' + makeRef(number);
+}
+
+function makeQRCodeDivId(number){
+    return 'qr_code_' + number;
+}
+
+function makeQRLabelDivId(number){
+    return 'qr_label_' + number;
+}
+
+function makeCode (number) {
+    var qrcode = new QRCode(makeQRCodeDivId(number),
+    {
+        width: 64,
+        height: 64,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.L
+    });
+    qrcode.makeCode(makeURL(number));
+}
+
+function addCodeHTML(number){
+
+    var qrdiv = document.createElement('div');
+    qrdiv.style = 'margin: 10px; float: left';
+
+    var code = document.createElement('div');
+    code.id = makeQRCodeDivId(number)
+
+    var label = document.createElement('div');
+    label.id = makeQRLabelDivId(number)
+    label.style = 'font-family: monospace; font-size: 12px; text-align:left';
+
+    var container = document.getElementById('qr_container');
+    qrdiv.appendChild(code);
+    qrdiv.appendChild(label);
+    container.appendChild(qrdiv);
+
+    makeCode(number);
+
+    label.innerHTML= makeRef(number);
+}
+
+for(var i = 0; i < 256; i++){
+    addCodeHTML(i);
+}
+
+</script>
 </body>
 </html>
